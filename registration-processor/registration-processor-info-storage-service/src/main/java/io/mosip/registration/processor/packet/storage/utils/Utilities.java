@@ -14,7 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.mosip.registration.processor.core.constant.AbisConstant;
 import org.apache.commons.lang.StringUtils;
+import org.assertj.core.util.Lists;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -598,6 +600,30 @@ public class Utilities {
 
 		return UIN;
 
+	}
+
+	public String getUINByHandle(String id, String process, ProviderStageName stageName)
+			throws IOException, ApisResourceAccessException, PacketManagerException, JsonProcessingException {
+		regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REGISTRATIONID.toString(), id,
+				"Utilities::getUINByHandle()::entry");
+		String handle = packetManagerService.getFieldByMappingJsonKey(id, MappingJsonConstants.UNRAFID, process, stageName);
+		regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REGISTRATIONID.toString(), id,
+				"Utilities::getUINByHandle()::handleRetrieved");
+		if (handle != null) {
+			List<String> pathSegments = new ArrayList<>();
+			handle = handle.concat("@unrafId");
+			String queryParam = "idType";
+			String queryParamValue = "handle";
+			IdResponseDTO1 response = (IdResponseDTO1) restClientService.getApi(ApiName.RETRIEVEIDENTITY, Lists.newArrayList(handle), queryParam, queryParamValue,
+					IdResponseDTO1.class);
+			if (response.getResponse() != null) {
+				String jsonString = objMapper.writeValueAsString(response.getResponse().getIdentity());//gsonObj.toJson(response.getResponse());
+				JSONObject identityJson = JsonUtil.objectMapperReadValue(jsonString, JSONObject.class);
+				//JSONObject demographicIdentity = JsonUtil.getJSONObject(identityJson, regProcessorDemographicIdentity);
+				return JsonUtil.getJSONValue(identityJson, AbisConstant.UIN);
+			}
+		}
+		return null;
 	}
 
 	/**

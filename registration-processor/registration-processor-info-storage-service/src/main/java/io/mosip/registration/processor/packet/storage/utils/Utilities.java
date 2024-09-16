@@ -611,7 +611,7 @@ public class Utilities {
 				"Utilities::getUINByHandle()::handleRetrieved");
 		if (handle != null) {
 			List<String> pathSegments = new ArrayList<>();
-			handle = handle.concat("@unrafId");
+			handle = handle.concat("@unrafid");
 			String queryParam = "idType";
 			String queryParamValue = "handle";
 			IdResponseDTO1 response = (IdResponseDTO1) restClientService.getApi(ApiName.RETRIEVEIDENTITY, Lists.newArrayList(handle), queryParam, queryParamValue,

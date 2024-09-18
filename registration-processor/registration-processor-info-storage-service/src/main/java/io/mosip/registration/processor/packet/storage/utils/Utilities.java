@@ -609,6 +609,11 @@ public class Utilities {
 		String handle = packetManagerService.getFieldByMappingJsonKey(id, MappingJsonConstants.UNRAFID, process, stageName);
 		regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REGISTRATIONID.toString(), id,
 				"Utilities::getUINByHandle()::handleRetrieved");
+		JSONObject jsonObject = getIdentityJSONObjectByHandle(handle);
+		return JsonUtil.getJSONValue(jsonObject, "UIN");
+	}
+
+	public JSONObject getIdentityJSONObjectByHandle(String handle) throws ApisResourceAccessException, IOException {
 		if (handle != null) {
 			List<String> pathSegments = new ArrayList<>();
 			handle = handle.concat("@unrafid");

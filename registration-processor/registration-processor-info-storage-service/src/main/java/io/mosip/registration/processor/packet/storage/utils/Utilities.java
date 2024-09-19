@@ -8,11 +8,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import io.mosip.registration.processor.core.constant.AbisConstant;
 import org.apache.commons.lang.StringUtils;
@@ -621,11 +617,20 @@ public class Utilities {
 			String queryParamValue = "handle";
 			IdResponseDTO1 response = (IdResponseDTO1) restClientService.getApi(ApiName.RETRIEVEIDENTITY, Lists.newArrayList(handle), queryParam, queryParamValue,
 					IdResponseDTO1.class);
-			if (response.getResponse() != null) {
-				String jsonString = objMapper.writeValueAsString(response.getResponse().getIdentity());//gsonObj.toJson(response.getResponse());
-				JSONObject identityJson = JsonUtil.objectMapperReadValue(jsonString, JSONObject.class);
-				//JSONObject demographicIdentity = JsonUtil.getJSONObject(identityJson, regProcessorDemographicIdentity);
-				return JsonUtil.getJSONValue(identityJson, AbisConstant.UIN);
+			if (response != null && response.getResponse() != null) {
+				try {
+					String jsonString = objMapper.writeValueAsString(response.getResponse().getIdentity());
+					regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.UIN.toString(), "",
+							"Utilities::getIdentityJSONObjectByHandle():: RETRIEVEIDENTITY GET service call ended Successfully");
+					return (JSONObject) new JSONParser().parse(jsonString);
+				} catch (org.json.simple.parser.ParseException e) {
+					regProcLogger.error(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.UIN.toString(), "",
+							ExceptionUtils.getStackTrace(e));
+					throw new IdRepoAppException("Error while parsing string to JSONObject", e);
+				}
+			} else {
+				regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.UIN.toString(), "",
+						"Utilities::getIdentityJSONObjectByHandle():: RETRIEVEIDENTITY GET service returned NULL");
 			}
 		}
 		return null;

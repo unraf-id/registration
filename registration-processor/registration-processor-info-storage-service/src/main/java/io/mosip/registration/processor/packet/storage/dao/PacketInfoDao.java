@@ -205,7 +205,7 @@ public class PacketInfoDao {
 			params.put("dob", dob);
 		}
 		if (unrafId != null) {
-			query.append(alias + ".unrafId =: unrafId").append(AND);
+			query.append(alias + ".unrafId=:unrafId").append(AND);
 			params.put("unrafId", unrafId);
 		}
 		query.append(alias + ".id.langCode=:langCode").append(AND);

@@ -41,4 +41,6 @@ public class DemographicInfoDto implements Serializable {
 	/** The postalcode. */
 	private String postalcode;
 
+	/** The unrafId. */
+	private String unrafId;
 }

@@ -227,12 +227,16 @@ public class PacketInfoManagerImpl implements PacketInfoManager<Identity, Applic
 			String email = JsonUtil.getJSONValue(
 					JsonUtil.getJSONObject(regProcessorIdentityJson, MappingJsonConstants.EMAIL),
 					MappingJsonConstants.VALUE);
+			String urrafId = JsonUtil.getJSONValue(
+					JsonUtil.getJSONObject(regProcessorIdentityJson, MappingJsonConstants.UNRAFID),
+					MappingJsonConstants.VALUE);
 
 			fields.addAll(Arrays.asList(nameKey.split(",")));
 			fields.add(dob);
 			fields.add(gender);
 			fields.add(email);
 			fields.add(phone);
+			fields.add(urrafId);
 
 			Map<String, String> fieldMap = packetManagerService.getFields(registrationId, fields, process, stageName);
 
@@ -258,6 +262,7 @@ public class PacketInfoManagerImpl implements PacketInfoManager<Identity, Applic
 			}
 			demographicData.setPhone(fieldMap.get(phone));
 			demographicData.setEmail(fieldMap.get(email));
+			demographicData.setEmail(fieldMap.get(urrafId));
 
 		} catch (IOException e) {
 			regProcLogger.error(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REGISTRATIONID.toString(),

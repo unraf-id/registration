@@ -137,6 +137,7 @@ public class PacketInfoDao {
 		demo.setPhone(object.getPhone());
 		demo.setEmail(object.getEmail());
 		demo.setPostalcode(object.getPostalCode());
+		demo.setUnrafId(object.getUnrafId());
 		return demo;
 	}
 
@@ -185,7 +186,7 @@ public class PacketInfoDao {
 	 * @return the all demographic entities
 	 */
 	private List<IndividualDemographicDedupeEntity> getAllDemographicEntities(String name, String gender, String dob,
-			String langCode) {
+			String langCode, String unrafId) {
 		Map<String, Object> params = new HashMap<>();
 		String className = IndividualDemographicDedupeEntity.class.getSimpleName();
 		String alias = IndividualDemographicDedupeEntity.class.getName().toLowerCase().substring(0, 1);
@@ -202,6 +203,10 @@ public class PacketInfoDao {
 		if (dob != null) {
 			query.append(alias + ".dob=:dob ").append(AND);
 			params.put("dob", dob);
+		}
+		if (unrafId != null) {
+			query.append(alias + ".unrafId =: unrafId").append(AND);
+			params.put("unrafId", unrafId);
 		}
 		query.append(alias + ".id.langCode=:langCode").append(AND);
 		params.put("langCode", langCode);
@@ -223,11 +228,11 @@ public class PacketInfoDao {
 	 *            the lang code
 	 * @return the all demographic info dtos
 	 */
-	public List<DemographicInfoDto> getAllDemographicInfoDtos(String name, String gender, String dob, String langCode) {
+	public List<DemographicInfoDto> getAllDemographicInfoDtos(String name, String gender, String dob, String langCode, String unrafId) {
 
 		List<DemographicInfoDto> demographicInfoDtos = new ArrayList<>();
 		List<IndividualDemographicDedupeEntity> demographicInfoEntities = getAllDemographicEntities(name, gender, dob,
-				langCode);
+				langCode, unrafId);
 		for (IndividualDemographicDedupeEntity entity : demographicInfoEntities) {
 			demographicInfoDtos.add(convertEntityToDemographicDto(entity));
 		}
@@ -591,7 +596,7 @@ public class PacketInfoDao {
 	 *
 	 * @param matchedRegIds
 	 *            the matched reg ids
-	 * @param statusCode1
+	 * @param statusCode
 	 *            the status code
 	 * @return the processed or processing reg ids
 	 */

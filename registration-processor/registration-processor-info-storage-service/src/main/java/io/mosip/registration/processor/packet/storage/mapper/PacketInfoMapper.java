@@ -176,6 +176,7 @@ public class PacketInfoMapper {
 			entity.setGender(getHMACHashCode(getJsonValues(demoDto.getGender(), languageArray[i],istrim)));
 			entity.setPhone(getHMACHashCode(demoDto.getPhone()));
 			entity.setEmail(getHMACHashCode(demoDto.getEmail()));
+			entity.setUnrafId(getHMACHashCode(demoDto.getUnrafId()));
 			demogrphicDedupeEntities.add(entity);
 
 		}

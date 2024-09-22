@@ -53,7 +53,7 @@ public class DemoDedupe {
 		List<DemographicInfoDto> infoDtos = new ArrayList<>();
 		for (DemographicInfoDto demoDto : applicantDemoDto) {
 			infoDtos.addAll(packetInfoDao.getAllDemographicInfoDtos(demoDto.getName(), demoDto.getGenderCode(),
-					demoDto.getDob(), demoDto.getLangCode()));
+					demoDto.getDob(), demoDto.getLangCode(), demoDto.getUnrafId()));
 		}
 		demographicInfoDtos = getAllDemographicInfoDtosWithUin(infoDtos);
 		regProcLogger.debug(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REFERENCEID.toString(), refId,

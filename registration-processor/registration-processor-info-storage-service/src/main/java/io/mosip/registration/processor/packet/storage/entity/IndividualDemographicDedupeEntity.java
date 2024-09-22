@@ -48,6 +48,9 @@ public class IndividualDemographicDedupeEntity extends BasePacketEntity<Individu
 	@Column(name = "pincode")
 	private String postalCode;
 
+	@Column(name = "unrafid", nullable = false)
+	private String unrafId;
+
 	@Column(name = "is_active")
 	private Boolean isActive;
 
@@ -139,6 +142,14 @@ public class IndividualDemographicDedupeEntity extends BasePacketEntity<Individu
 		this.postalCode = postalCode;
 	}
 
+	public String getUnrafId() {
+		return unrafId;
+	}
+
+	public void setUnrafId(String unrafId) {
+		this.unrafId = unrafId;
+	}
+
 	public Boolean getIsActive() {
 		return isActive;
 	}
@@ -225,6 +236,7 @@ public class IndividualDemographicDedupeEntity extends BasePacketEntity<Individu
 				Objects.equals(phone, that.phone) &&
 				Objects.equals(email, that.email) &&
 				Objects.equals(postalCode, that.postalCode) &&
+				Objects.equals(unrafId, that.unrafId) &&
 				Objects.equals(isActive, that.isActive) &&
 				Objects.equals(crBy, that.crBy) &&
 				Objects.equals(crDtimes, that.crDtimes) &&
@@ -236,6 +248,6 @@ public class IndividualDemographicDedupeEntity extends BasePacketEntity<Individu
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(regId, process, iteration, name, dob, gender, phone, email, postalCode, isActive, crBy, crDtimes, updBy, updDtimes, isDeleted, delDtimes);
+		return Objects.hash(regId, process, iteration, name, dob, gender, phone, email, postalCode, unrafId, isActive, crBy, crDtimes, updBy, updDtimes, isDeleted, delDtimes);
 	}
 }
